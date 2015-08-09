@@ -56,6 +56,7 @@ module.exports = function(sails) {
         defaults: {
             // default key prefix for kue in
             // redis server
+            active: true,
             prefix: 'q',
 
             //default redis configuration
@@ -94,6 +95,11 @@ module.exports = function(sails) {
             //config
             var config =
                 _.extend(hook.defaults, sails.config.subscriber);
+
+            if(!config.active){
+              sails.log.verbose('Subscriber kue hook deactivated');
+              return done();
+            }
 
             // Lets wait on some of the sails core hooks to
             // finish loading before 
